@@ -4,9 +4,10 @@ from django.db import models
 class Wells(models.Model):
 
     #id_well = models.CharField(max_length=255)  # nome do arquivo + numero +tipo poço + trajetoria
-    #title = models.CharField(max_length=255)  # nome arquivo + usuario
+    #title = models.CharField(max_length=255)  # nome arquivo + usuario ///receber nome da trajetoria
     #author = models.CharField(max_length=255) # usuario solicitou otm
 
+    tipo_trajetoria = models.CharField(max_length=255, null=True)
     # wells
     cabeca_poco = models.CharField(max_length=255)
     kop = models.CharField(max_length=255, null=True)

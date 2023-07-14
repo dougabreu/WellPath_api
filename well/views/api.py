@@ -7,6 +7,8 @@ from ..model.models import Wells
 from tkinter import Tk
 from tkinter import filedialog
 
+from ..utils.generalUtils import deserializer
+
 
 @api_view()
 def well_api_list(request):
@@ -20,17 +22,20 @@ def well_api_list(request):
 
 def well_api_save():
 
-    Tk().withdraw()
+    #Tk().withdraw()
 
-    input_data = filedialog.askopenfilename(
-        title='Buscar arquivo de poço',
-        initialdir='D:\\Well_Path\\Documents\\input'
-    )
+    #input_data = filedialog.askopenfilename(
+    #    title='Buscar arquivo de poço',
+    #    initialdir='D:\\Well_Path\\Documents\\input'
+    #)
 
-    #input_data = 'D:\\Well_Path\\Documents\\input\\tipo1.json'
+    input_data = 'D:\\Well_Path\\Documents\\input\\tipo1_test.json'
+    well_info = deserializer(input_data)
 
-    data_well = TrajectoryServiceManager(input_data).check_target_trajectory()
+    for well in well_info:
+        data_well = TrajectoryServiceManager(well_info[well]).check_target_trajectory()
 
-    serializer = WellSerializer(data=data_well)
-    serializer.is_valid(raise_exception=True)
-    serializer.save()
+        serializer = WellSerializer(data=data_well)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+

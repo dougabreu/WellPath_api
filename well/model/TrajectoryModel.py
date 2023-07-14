@@ -11,8 +11,9 @@ class TrajectoryServiceManager:
 
     def __init__(self, input_data):
 
-        self.input_data = input_data
-        self.well_info = deserializer(self.input_data)
+        self.trajectory_name = ''
+
+        self.well_info = input_data
         self.service = EngineManager(self.well_info)
 
         # dados de entrada
@@ -62,6 +63,7 @@ class TrajectoryServiceManager:
 
     def create_well_type_1_trajectory(self):
 
+        self.trajectory_name = 'Trajetoria tipo 1'
         try:
 
             ray = self.service.ray_curvature_calculation(self.dog_leg_build_up)
@@ -98,7 +100,7 @@ class TrajectoryServiceManager:
 
             distance_horizontal = self.service.distance_horizontal_calculation()
 
-            save_state_data = {'cabeca_poco': str(self.well_head), 'kop': str(start_kop1_xyz), 'eob': str(end_kop1_xyz),
+            save_state_data = {'tipo_trajetoria': self.trajectory_name, 'cabeca_poco': str(self.well_head), 'kop': str(start_kop1_xyz), 'eob': str(end_kop1_xyz),
                                'inicio_objetivo': str(self.start_target), 'fim_objetivo': str(self.end_target),
                                'angulo': slant_angle, 'direcao_objetivo': self.service.direction_azimuth_calculation(),
                                'afastamento_objetivo': distance_horizontal,
@@ -123,6 +125,7 @@ class TrajectoryServiceManager:
 
     def create_well_type_S_trajectory(self):
 
+        self.trajectory_name = 'Trajetoria tipo S'
         ray_1 = self.service.ray_curvature_calculation(self.dog_leg_build_up)
         ray_2 = self.service.ray_curvature_calculation(self.dog_leg_drop_off)
 
@@ -156,7 +159,7 @@ class TrajectoryServiceManager:
 
         distance_horizontal = self.service.distance_horizontal_calculation()
 
-        save_state_data = {'cabeca_poco': str(self.well_head), 'kop': str(start_kop1_xyz), 'eob': str(end_kop1_xyz), 'drop_off_xyz': str(start_drop_off_xyz),
+        save_state_data = {'tipo_trajetoria': self.trajectory_name, 'cabeca_poco': str(self.well_head), 'kop': str(start_kop1_xyz), 'eob': str(end_kop1_xyz), 'drop_off_xyz': str(start_drop_off_xyz),
                            'trecho_reto': str(end_drop_off_xyz), 'inicio_objetivo': str(self.start_target), 'fim_objetivo': str(self.end_target),
                            'angulo': slant_angle, 'direcao_objetivo': self.service.direction_azimuth_calculation(),
                            'afastamento_objetivo': distance_horizontal,

@@ -29,7 +29,7 @@ def create_result_graph_2d_tipo1(well_head, start_kop_xyz, target, target_end, d
 
     #create_subplots_configuration(x_finally, y_finally, z_finally, '1')
     create_graph_web(y_finally, z_finally, '1')
-    create_result_graph_3d(x_finally, y_finally, z_finally, '1')
+    #create_result_graph_3d(x_finally, y_finally, z_finally, '1')
 
 
 def create_result_graph_2d_tipo_S_or_horizontal(well_head, start_point1, start_point2, start_target, end_target,
@@ -58,7 +58,7 @@ def create_result_graph_2d_tipo_S_or_horizontal(well_head, start_point1, start_p
 
     #create_subplots_configuration(second_x_finally, second_y_finally, second_z_finally, name)
     create_graph_web(second_y_finally, second_z_finally, name)
-    create_result_graph_3d(second_x_finally, second_y_finally, second_z_finally, name)
+    #create_result_graph_3d(second_x_finally, second_y_finally, second_z_finally, name)
 
 
 def create_result_graph_3d(point_x, point_y, point_z, name):
