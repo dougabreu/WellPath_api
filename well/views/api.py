@@ -20,14 +20,14 @@ def well_api_list(request):
 
 def well_api_save():
 
-    #Tk().withdraw()
+    Tk().withdraw()
 
-    #input_data = filedialog.askopenfilename(
-    #    title='Buscar arquivo de poço',
-    #    initialdir='D:\\Well_Path\\Documents\\input'
-    #)
+    input_data = filedialog.askopenfilename(
+        title='Buscar arquivo de poço',
+        initialdir='D:\\Well_Path\\Documents\\input'
+    )
 
-    input_data = 'D:\\Well_Path\\Documents\\input\\tipo1.json'
+    #input_data = 'D:\\Well_Path\\Documents\\input\\tipo1.json'
 
     data_well = TrajectoryServiceManager(input_data).check_target_trajectory()
 
