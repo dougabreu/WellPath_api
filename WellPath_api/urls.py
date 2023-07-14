@@ -20,5 +20,5 @@ from well.views import api
 
 
 urlpatterns = [
-    path('well/', api.well_api_list),
+    path('', api.well_api_list),
 ]

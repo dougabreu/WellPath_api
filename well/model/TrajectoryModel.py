@@ -1,9 +1,14 @@
+from operator import neg
+
+import numpy as np
+
 from well.utils.generalUtils import deserializer
 from well.model.EngineModel import EngineManager
 
 from scipy.spatial import distance
 import os
 import math
+import plotly.graph_objects as go
 
 
 class TrajectoryServiceManager:
@@ -41,13 +46,13 @@ class TrajectoryServiceManager:
         ## Vertical dentro do reservatorio
         if distance.euclidean((self.start_target[0], self.start_target[1]), (self.end_target[0], self.end_target[1])) < 1e-3:
             if not self.create_well_vertical_trajectory():
-                self.create_well_type_S_trajectory()
+                return self.create_well_type_S_trajectory()
 
         ## Direcional dentro do reservatorio #######verificar validacao do tipo
         elif distance.euclidean((self.start_target[0], self.start_target[2]), (self.end_target[0], self.end_target[2])) < 1e-3:
-            self.create_well_type_1_trajectory()  # separar 1 kop
+            return self.create_well_type_1_trajectory()  # separar 1 kop
         else:
-            self.create_well_type_horizontal_trajectory() ## totalmente Horizontal dentro do reservatorio com 2 kop
+            return self.create_well_type_horizontal_trajectory() ## totalmente Horizontal dentro do reservatorio com 2 kop
 
     def create_well_vertical_trajectory(self):
 
@@ -97,20 +102,19 @@ class TrajectoryServiceManager:
 
             distance_horizontal = self.service.distance_horizontal_calculation()
 
-            save_state_data = {'cabeca_poco': self.well_head, 'kop': start_kop1_xyz, 'eob': end_kop1_xyz, 'objetivo': self.start_target,
-                               'fim_objetivo': self.end_target, 'angulo': slant_angle,
-                               'direcao_objetivo': self.service.direction_azimuth_calculation(),
-                               'afastamento do objetivo': distance_horizontal,
-                               'profundidade vertical': self.end_target[2] - self.kop_vertical_projection,
+            save_state_data = {'cabeca_poco': str(self.well_head), 'kop': str(start_kop1_xyz), 'eob': str(end_kop1_xyz),
+                               'inicio_objetivo': str(self.start_target), 'fim_objetivo': str(self.end_target),
+                               'angulo': slant_angle, 'direcao_objetivo': self.service.direction_azimuth_calculation(),
+                               'afastamento_objetivo': distance_horizontal,
+                               'profundidade_vertical': self.end_target[2] - self.kop_vertical_projection,
                                'trecho_cabeca_kop': round(length_well_head_to_kop, 2),
                                'trecho_arco_buildup': round(length_buildup, 2), 'trecho_slant': round(length_slant, 2),
                                'trecho_canhoneado': round(length_finally, 2), 'comprimento_total': round(length_total, 2)}
 
-            return save_state_data
+            # self.create_result_graph_2d_tipo1(self.well_head, start_kop1_xyz, self.start_target, self.end_target,
+            #
 
-            #serialize_data(save_state_data, os.path.basename(self.input_data))
-            #create_result_graph_2d_tipo1(self.well_head, start_kop1_xyz, self.start_target, self.end_target,
-            #                             self.depth_eob_x_y, self.length_eob_x_y, self.kop_vertical_projection)
+            return save_state_data
 
         except (
                # ExceptionManager.LengthKopAboveTheLimit,
@@ -318,4 +322,42 @@ class TrajectoryServiceManager:
 
         return [round(point_x, 2), round(point_y, 2), round(point_z, 2)]
 
+    def create_result_graph_2d_tipo1(self, well_head, start_kop_xyz, target, target_end, depth_eob_y, length_eob_y, depth_kop):
 
+        x_start = np.array([round(well_head[0], 2), round(target[0], 2), round(target_end[0], 2)])
+        y_start = np.array([round(well_head[1], 2), round(target[1], 2), round(target_end[1], 2)])
+        z_start = np.array([round(well_head[2], 2), round(target[2], 2), round(target_end[2], 2)])
+
+        x_point, y_point, z_point = self.create_points_graph(start_kop_xyz, depth_eob_y, length_eob_y, depth_kop)
+
+        x_finally = np.insert(x_start, 1, x_point)
+        y_finally = np.insert(y_start, 1, y_point)
+        z_finally = np.insert(z_start, 1, z_point)
+
+        fig_new = go.Figure()
+        fig_new.add_trace(go.Scatter(x=y_finally, y=neg(z_finally), name='tipo1',
+                                     line=dict(color='blue', width=4, dash='dot')))
+
+        fig_new.update_layout(title='Trajetoria tipo !',
+                              xaxis_title='Y',
+                              yaxis_title='Z')
+        fig_new.show()
+
+    def create_points_graph(self, start, depth_xyz, length_xyz, depth_kop_or_dropp_off):
+
+        axle_x = []
+        axle_y = []
+        axle_z = []
+
+        for angle in range(0, 90 + 1, 1):
+            x = length_xyz[0] * math.sin(math.radians(angle))
+            y = length_xyz[1] * math.sin(math.radians(angle))
+            z = (max(depth_xyz[0], depth_xyz[1]) - depth_kop_or_dropp_off) * (1 - math.cos(math.radians(angle)))
+
+            axle_x.append(round((start[0] - abs(x)), 2))
+            axle_y.append(round((start[1] - abs(y)), 2))
+            axle_z.append(round((start[2] - abs(z)), 2))
+
+        axle_z.reverse()
+
+        return axle_x, axle_y, axle_z
