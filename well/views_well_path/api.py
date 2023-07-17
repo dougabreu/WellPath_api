@@ -1,11 +1,8 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from well.model.TrajectoryModel import TrajectoryServiceManager
-from WellPath_api.serializers import WellSerializer
+from well.serializers import WellSerializer
 from ..model.models import Wells
-
-from tkinter import Tk
-from tkinter import filedialog
 
 from ..utils.generalUtils import deserializer
 
