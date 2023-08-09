@@ -1,4 +1,3 @@
-from well.utils.generalUtils import deserializer
 from well.model.EngineModel import EngineManager
 from scipy.spatial import distance
 from well.utils.ResultGraph import create_result_graph_2d_tipo_vertical, create_result_graph_2d_tipo1, \

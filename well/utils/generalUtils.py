@@ -1,5 +1,4 @@
 import json
-import os
 
 
 def deserializer(folder_directory):

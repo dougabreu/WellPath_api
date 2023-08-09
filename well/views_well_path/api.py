@@ -2,9 +2,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from well.model.TrajectoryModel import TrajectoryServiceManager
 from well.serializers import WellSerializer
-from ..model.models import Wells
-
-from ..utils.generalUtils import deserializer
+from well.model.models import Wells
+from well.utils.generalUtils import deserializer
 
 
 @api_view()
@@ -26,7 +25,7 @@ def well_api_save():
     #    initialdir='D:\\Well_Path\\Documents\\input'
     #)
 
-    input_data = 'D:\\Projetos\\WellPath_api\\well\\Documents\\input\\tipo1_test.json'
+    input_data = 'D:\\Projetos_Andamento\\Well_Path\\Documents\\input\\tipo1_test.json'
     well_info = deserializer(input_data)
 
     for well in well_info:
