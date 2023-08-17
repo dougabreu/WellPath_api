@@ -1,0 +1,9 @@
+# Configurações do PyCharm
+.idea/
+
+# Arquivos de Python compilados
+__pycache__/
+*.py[cod]
+
+# Banco de dados local
+db.sqlite3

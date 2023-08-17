@@ -25,7 +25,7 @@ def well_api_save():
     #    initialdir='D:\\Well_Path\\Documents\\input'
     #)
 
-    input_data = 'D:\\Projetos_Andamento\\Well_Path\\Documents\\input\\tipo1_test.json'
+    input_data = 'D:\\Projetos_Andamento\\WellPath_api\\well\\Documents\\input\\tipo1_test.json'
     well_info = deserializer(input_data)
 
     for well in well_info:

@@ -3,6 +3,7 @@ import numpy as np
 from operator import neg
 import plotly.graph_objects as go
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 
 
 def create_result_graph_2d_tipo_vertical(well_head, target, target_end):
